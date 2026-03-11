@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>HábitoMax</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&family=Instrument+Sans:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="ambient amb1"></div>
+<div class="ambient amb2"></div>
+<div id="confetti"></div>
+
+<!-- ================================
+     ONBOARDING
+================================ -->
+<div id="page-onboard">
+  <div class="ob-logo">⚡</div>
+  <div class="ob-brand">Hábito<em>Max</em></div>
+  <div class="ob-tag">Pequenos hábitos, grandes conquistas</div>
+
+  <div class="ob-cards">
+    <div class="ob-card">
+      <div class="ob-card-icon" style="background:rgba(212,255,71,0.1)">🎯</div>
+      <div class="ob-card-text">
+        <strong>Desafios de 7, 21 e 30 dias</strong>
+        <span>Construa hábitos duradouros com metas progressivas</span>
+      </div>
+    </div>
+    <div class="ob-card">
+      <div class="ob-card-icon" style="background:rgba(139,92,246,0.1)">🏆</div>
+      <div class="ob-card-text">
+        <strong>Conquistas e badges</strong>
+        <span>Desbloqueie recompensas conforme avança</span>
+      </div>
+    </div>
+    <div class="ob-card">
+      <div class="ob-card-icon" style="background:rgba(255,107,107,0.1)">🔥</div>
+      <div class="ob-card-text">
+        <strong>Streak diário</strong>
+        <span>Nunca quebre sua corrente de hábitos</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="ob-form">
+    <label class="ob-label">Seu nome</label>
+    <input class="ob-input" id="ob-name" placeholder="Como devemos te chamar?" maxlength="24">
+
+    <label class="ob-label" style="margin-bottom:10px;">Escolha seu avatar</label>
+    <div class="avatar-row" id="ob-avatars">
+      <div class="av-opt sel" data-av="🦁">🦁</div>
+      <div class="av-opt" data-av="🐺">🐺</div>
+      <div class="av-opt" data-av="🦊">🦊</div>
+      <div class="av-opt" data-av="🐉">🐉</div>
+      <div class="av-opt" data-av="🦅">🦅</div>
+    </div>
+
+    <button class="btn btn-lime" onclick="startApp()">Começar minha jornada →</button>
+    <button class="btn btn-outline" onclick="startAppQuick()">Entrar sem cadastro</button>
+  </div>
+</div>
+
+<!-- ================================
+     HOME
+================================ -->
+<div id="page-home" class="page">
+  <div class="page-inner">
+    <div class="home-header">
+      <div class="hh-left">
+        <div class="hh-greeting" id="hh-greeting">Bom dia! 👋</div>
+        <div class="hh-name" id="hh-name">Atleta</div>
+      </div>
+      <div class="hh-right">
+        <div class="streak-pill">🔥 <span id="streak-num">5</span> dias</div>
+        <div class="avatar-circle" id="home-avatar" onclick="goPage('profile')">🦁</div>
+      </div>
+    </div>
+
+    <!-- Date strip -->
+    <div class="date-strip" id="date-strip"></div>
+
+    <!-- Progress ring -->
+    <div class="progress-card">
+      <div class="ring-wrap">
+        <svg class="ring-svg" viewBox="0 0 84 84">
+          <circle class="ring-track" cx="42" cy="42" r="38"/>
+          <circle class="ring-prog" id="ring-prog" cx="42" cy="42" r="38"/>
+        </svg>
+        <div class="ring-label">
+          <div class="ring-pct" id="ring-pct">0%</div>
+          <div class="ring-of" id="ring-of">0/0</div>
+        </div>
+      </div>
+      <div class="prog-info">
+        <div class="prog-title">Progresso de hoje</div>
+        <div class="prog-sub" id="prog-sub">Complete seus hábitos!</div>
+        <div class="mini-bar"><div class="mini-bar-fill" id="mini-bar"></div></div>
+      </div>
+    </div>
+
+    <!-- Habits -->
+    <div class="sec-head">
+      <div class="sec-title">Meus Hábitos</div>
+      <button class="sec-add" onclick="openModal()">+</button>
+    </div>
+    <div class="habits-wrap" id="habits-list"></div>
+
+    <!-- Active challenge teaser -->
+    <div style="padding: 20px 24px 0;">
+      <div class="challenge-banner" onclick="goPage('challenges')" style="cursor:pointer">
+        <div class="cb-label">Desafio ativo</div>
+        <div class="cb-title" id="active-chall-name">Meditação 7 Dias</div>
+        <div class="cb-sub" id="active-chall-sub">3 de 7 dias completos</div>
+        <div class="cb-bar"><div class="cb-bar-fill" id="active-chall-bar" style="width:43%"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================================
+     CHALLENGES
+================================ -->
+<div id="page-challenges" class="page">
+  <div class="page-inner">
+    <div style="padding: 52px 24px 20px;">
+      <div class="achieve-title">Desafios 🎯</div>
+      <div class="achieve-sub">Teste seus limites com metas progressivas</div>
+    </div>
+    <div class="challenges-wrap" id="challenges-list"></div>
+  </div>
+</div>
+
+<!-- ================================
+     ACHIEVEMENTS
+================================ -->
+<div id="page-achieve" class="page">
+  <div class="page-inner">
+    <div class="achieve-header">
+      <div class="achieve-title">Conquistas 🏆</div>
+      <div class="achieve-sub">Desbloqueie badges completando hábitos e desafios</div>
+    </div>
+    <div class="achieve-stats" id="achieve-stats"></div>
+    <div class="badges-grid" id="badges-grid"></div>
+  </div>
+</div>
+
+<!-- ================================
+     PROFILE
+================================ -->
+<div id="page-profile" class="page">
+  <div class="page-inner">
+    <div class="profile-wrap">
+      <div class="profile-card">
+        <div class="profile-av" id="profile-av">🦁</div>
+        <div class="profile-name" id="profile-name">Atleta</div>
+        <div class="profile-level" id="profile-level">⚡ Nível 3 — Construtor de Hábitos</div>
+        <div class="xp-bar-wrap">
+          <div class="xp-labels"><span>XP: 680</span><span>Próx nível: 1000</span></div>
+          <div class="xp-bar"><div class="xp-bar-fill" id="xp-bar"></div></div>
+        </div>
+      </div>
+
+      <div class="profile-stats" id="profile-stats"></div>
+
+      <div class="settings-list">
+        <div class="setting-item">
+          <span class="si-icon">🔔</span>
+          <div class="si-text">
+            <div class="si-label">Notificações</div>
+            <div class="si-desc">Lembrete diário às 08:00</div>
+          </div>
+          <span class="si-arrow">›</span>
+        </div>
+        <div class="setting-item">
+          <span class="si-icon">🎨</span>
+          <div class="si-text">
+            <div class="si-label">Tema</div>
+            <div class="si-desc">Escuro (padrão)</div>
+          </div>
+          <span class="si-arrow">›</span>
+        </div>
+        <div class="setting-item">
+          <span class="si-icon">📤</span>
+          <div class="si-text">
+            <div class="si-label">Compartilhar progresso</div>
+            <div class="si-desc">Mostre sua jornada</div>
+          </div>
+          <span class="si-arrow">›</span>
+        </div>
+        <div class="setting-item" onclick="resetApp()">
+          <span class="si-icon">🚪</span>
+          <div class="si-text">
+            <div class="si-label">Sair</div>
+            <div class="si-desc">Voltar ao início</div>
+          </div>
+          <span class="si-arrow">›</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bottom Nav -->
+<nav class="bottom-nav" id="bottom-nav">
+  <div class="nav-btn active" data-page="home" onclick="goPage('home')">
+    <span class="nav-icon">🏠</span>
+    <span class="nav-label">Início</span>
+  </div>
+  <div class="nav-btn" data-page="challenges" onclick="goPage('challenges')">
+    <span class="nav-icon">🎯</span>
+    <span class="nav-label">Desafios</span>
+    <div class="nav-dot show" id="chall-dot"></div>
+  </div>
+  <div class="nav-btn" data-page="achieve" onclick="goPage('achieve')">
+    <span class="nav-icon">🏆</span>
+    <span class="nav-label">Conquistas</span>
+    <div class="nav-dot" id="badge-dot"></div>
+  </div>
+  <div class="nav-btn" data-page="profile" onclick="goPage('profile')">
+    <span class="nav-icon">👤</span>
+    <span class="nav-label">Perfil</span>
+  </div>
+</nav>
+
+<!-- ADD HABIT MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModalBg(event)">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Novo Hábito ✨</div>
+
+    <div class="form-group">
+      <label class="form-label">Nome do hábito</label>
+      <input class="form-input" id="new-name" placeholder="Ex: Meditar 10 minutos..." maxlength="40">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Ícone</label>
+      <div class="emoji-sel" id="emoji-sel"></div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Cor</label>
+      <div class="color-sel" id="color-sel"></div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Meta diária</label>
+      <input class="form-input" id="new-goal" placeholder="Ex: 10 minutos, 2 litros..." maxlength="30">
+    </div>
+
+    <button class="btn btn-lime" onclick="addHabit()" style="max-width:100%">Criar Hábito</button>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
