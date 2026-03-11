@@ -17,31 +17,209 @@ function getDifficulty(streak) {
 // ===================================================
 let state = {
   user: { name: 'Atleta', avatar: '🦁' },
-  streak: 5,
-  xp: 680,
+  streak: 0,
+  xp: 0,
   habits: [
-    { id: 1, name: 'Meditar',    icon: '🧘', color: '#d4ff47', streak: 5,  goal: '10 minutos', lastDone: null },
-    { id: 2, name: 'Exercitar',  icon: '🏋️', color: '#8b5cf6', streak: 8,  goal: '30 minutos', lastDone: null },
-    { id: 3, name: 'Ler',        icon: '📚', color: '#38bdf8', streak: 22, goal: '20 páginas',  lastDone: null },
-    { id: 4, name: 'Beber água', icon: '💧', color: '#f59e0b', streak: 3,  goal: '2 litros',    lastDone: null },
+    { id: 1, name: 'Meditar',    icon: '🧘', color: '#d4ff47', streak: 0, goal: '10 minutos', lastDone: null },
+    { id: 2, name: 'Exercitar',  icon: '🏋️', color: '#8b5cf6', streak: 0, goal: '30 minutos', lastDone: null },
+    { id: 3, name: 'Ler',        icon: '📚', color: '#38bdf8', streak: 0, goal: '20 páginas',  lastDone: null },
+    { id: 4, name: 'Beber água', icon: '💧', color: '#f59e0b', streak: 0, goal: '2 litros',    lastDone: null },
   ],
   challenges: [
-    { id: 1, name: 'Meditação 7 Dias',     desc: 'Medite todos os dias por uma semana',           icon: '🧘', days: 7,  doneDays: [true,true,true,false,false,false,false], lastAdvanced: null, color: '#8b5cf6', colorDim: 'rgba(139,92,246,0.15)', joined: true,  habitId: 1 },
-    { id: 2, name: 'Hábito de 21 Dias',    desc: 'O ciclo completo para formar um novo hábito',   icon: '🔄', days: 21, doneDays: Array(21).fill(false),                   lastAdvanced: null, color: '#38bdf8', colorDim: 'rgba(56,189,248,0.15)',  joined: false, habitId: null },
-    { id: 3, name: 'Transformação 30 Dias',desc: 'Mude sua vida em um mês com consistência',      icon: '🚀', days: 30, doneDays: Array(30).fill(false),                   lastAdvanced: null, color: '#f59e0b', colorDim: 'rgba(245,158,11,0.15)',  joined: false, habitId: null },
-    { id: 4, name: 'Guerreiro do Sono',    desc: 'Durma 8 horas por 7 dias seguidos',             icon: '😴', days: 7,  doneDays: Array(7).fill(false),                    lastAdvanced: null, color: '#ff6b6b', colorDim: 'rgba(255,107,107,0.15)', joined: false, habitId: null },
-    { id: 5, name: 'Hidratação Total',     desc: '2L de água por dia durante 21 dias',            icon: '💧', days: 21, doneDays: Array(21).fill(false),                   lastAdvanced: null, color: '#d4ff47', colorDim: 'rgba(212,255,71,0.12)',  joined: false, habitId: null },
+    { id: 1, name: 'Meditação 7 Dias',      desc: 'Medite todos os dias por uma semana',         icon: '🧘', days: 7,  doneDays: Array(7).fill(false),  lastAdvanced: null, color: '#8b5cf6', colorDim: 'rgba(139,92,246,0.15)', joined: false, habitId: null },
+    { id: 2, name: 'Hábito de 21 Dias',     desc: 'O ciclo completo para formar um novo hábito', icon: '🔄', days: 21, doneDays: Array(21).fill(false), lastAdvanced: null, color: '#38bdf8', colorDim: 'rgba(56,189,248,0.15)',  joined: false, habitId: null },
+    { id: 3, name: 'Transformação 30 Dias', desc: 'Mude sua vida em um mês com consistência',    icon: '🚀', days: 30, doneDays: Array(30).fill(false), lastAdvanced: null, color: '#f59e0b', colorDim: 'rgba(245,158,11,0.15)',  joined: false, habitId: null },
+    { id: 4, name: 'Guerreiro do Sono',     desc: 'Durma 8 horas por 7 dias seguidos',           icon: '😴', days: 7,  doneDays: Array(7).fill(false),  lastAdvanced: null, color: '#ff6b6b', colorDim: 'rgba(255,107,107,0.15)', joined: false, habitId: null },
+    { id: 5, name: 'Hidratação Total',      desc: '2L de água por dia durante 21 dias',          icon: '💧', days: 21, doneDays: Array(21).fill(false), lastAdvanced: null, color: '#d4ff47', colorDim: 'rgba(212,255,71,0.12)',  joined: false, habitId: null },
   ],
   badges: [
-    { id:1, icon:'🌱', name:'Primeiro Passo', desc:'Complete 1 hábito',       unlocked:true,  isNew:false },
-    { id:2, icon:'🔥', name:'Em Chamas',      desc:'3 dias de streak',        unlocked:true,  isNew:false },
-    { id:3, icon:'⚡', name:'Imparável',       desc:'7 dias seguidos',         unlocked:true,  isNew:true  },
-    { id:4, icon:'💎', name:'Diamante',        desc:'21 dias de streak',       unlocked:false, isNew:false },
-    { id:5, icon:'👑', name:'Campeão',         desc:'30 dias de streak',       unlocked:false, isNew:false },
-    { id:6, icon:'🎯', name:'Focado',          desc:'Complete um desafio',     unlocked:false, isNew:false },
-    { id:7, icon:'🏆', name:'Lendário',        desc:'3 desafios completos',    unlocked:false, isNew:false },
-    { id:8, icon:'🌟', name:'Inspiração',      desc:'Crie 5 hábitos',          unlocked:false, isNew:false },
-    { id:9, icon:'🚀', name:'Decolar',         desc:'Transformação 30 dias',   unlocked:false, isNew:false },
+    // 🔥 STREAK
+    { id:1,   cat:'streak',  icon:'🌱', name:'Primeiro Passo',   desc:'1º hábito completo',        unlocked:false, isNew:false },
+    { id:2,   cat:'streak',  icon:'🔥', name:'Em Chamas',         desc:'3 dias seguidos',           unlocked:false, isNew:false },
+    { id:3,   cat:'streak',  icon:'⚡', name:'Imparável',          desc:'7 dias seguidos',           unlocked:false, isNew:false },
+    { id:4,   cat:'streak',  icon:'💎', name:'Diamante',           desc:'21 dias de streak',         unlocked:false, isNew:false },
+    { id:5,   cat:'streak',  icon:'👑', name:'Campeão',            desc:'30 dias de streak',         unlocked:false, isNew:false },
+    { id:6,   cat:'streak',  icon:'🌙', name:'Mês Completo',       desc:'30 dias sem falhar',        unlocked:false, isNew:false },
+    { id:7,   cat:'streak',  icon:'🌟', name:'Dois Meses',         desc:'60 dias seguidos',          unlocked:false, isNew:false },
+    { id:8,   cat:'streak',  icon:'☀️', name:'Trimestre',          desc:'90 dias de streak',         unlocked:false, isNew:false },
+    { id:9,   cat:'streak',  icon:'🏔️', name:'Meio Ano',           desc:'180 dias de streak',        unlocked:false, isNew:false },
+    { id:10,  cat:'streak',  icon:'🎆', name:'Um Ano!',            desc:'365 dias de streak',        unlocked:false, isNew:false },
+    { id:11,  cat:'streak',  icon:'🔑', name:'Consistente',        desc:'14 dias seguidos',          unlocked:false, isNew:false },
+    { id:12,  cat:'streak',  icon:'🛡️', name:'Inabalável',         desc:'45 dias de streak',         unlocked:false, isNew:false },
+
+    // ✅ HÁBITOS COMPLETOS
+    { id:13,  cat:'habitos', icon:'✅', name:'Dedicado',           desc:'10 hábitos no total',       unlocked:false, isNew:false },
+    { id:14,  cat:'habitos', icon:'💯', name:'Cem por Cento',      desc:'50 hábitos completos',      unlocked:false, isNew:false },
+    { id:15,  cat:'habitos', icon:'🎯', name:'Focado',             desc:'100 hábitos completos',     unlocked:false, isNew:false },
+    { id:16,  cat:'habitos', icon:'🏅', name:'Veterano',           desc:'250 hábitos completos',     unlocked:false, isNew:false },
+    { id:17,  cat:'habitos', icon:'🥇', name:'Ouro',               desc:'500 hábitos completos',     unlocked:false, isNew:false },
+    { id:18,  cat:'habitos', icon:'🏆', name:'Lendário',           desc:'1000 hábitos completos',    unlocked:false, isNew:false },
+    { id:19,  cat:'habitos', icon:'🌈', name:'Arco-Íris',          desc:'Complete todos os hábitos', unlocked:false, isNew:false },
+    { id:20,  cat:'habitos', icon:'🎖️', name:'Elite',              desc:'Perfeito por 7 dias',       unlocked:false, isNew:false },
+    { id:21,  cat:'habitos', icon:'🌊', name:'Fluxo',              desc:'Perfeito por 14 dias',      unlocked:false, isNew:false },
+    { id:22,  cat:'habitos', icon:'🔮', name:'Mestre',             desc:'Perfeito por 30 dias',      unlocked:false, isNew:false },
+    { id:23,  cat:'habitos', icon:'🕊️', name:'Zen',                desc:'30 dias sem pular',         unlocked:false, isNew:false },
+    { id:24,  cat:'habitos', icon:'⚙️', name:'Máquina',            desc:'Hábito completado 50x',     unlocked:false, isNew:false },
+
+    // 🎯 DESAFIOS
+    { id:25,  cat:'desafios',icon:'🎪', name:'Primeiro Desafio',   desc:'Participe de 1 desafio',    unlocked:false, isNew:false },
+    { id:26,  cat:'desafios',icon:'🥈', name:'Prata',              desc:'Complete 1 desafio',        unlocked:false, isNew:false },
+    { id:27,  cat:'desafios',icon:'🥇', name:'Ouro Puro',          desc:'Complete 3 desafios',       unlocked:false, isNew:false },
+    { id:28,  cat:'desafios',icon:'💪', name:'Determinado',        desc:'Complete 5 desafios',       unlocked:false, isNew:false },
+    { id:29,  cat:'desafios',icon:'🚀', name:'Decolar',            desc:'Transformação 30 dias',     unlocked:false, isNew:false },
+    { id:30,  cat:'desafios',icon:'🧗', name:'Escalada',           desc:'Complete desafio 21 dias',  unlocked:false, isNew:false },
+    { id:31,  cat:'desafios',icon:'🌺', name:'Floresceu',          desc:'Complete desafio 7 dias',   unlocked:false, isNew:false },
+    { id:32,  cat:'desafios',icon:'🔱', name:'Tridente',           desc:'3 desafios simultâneos',    unlocked:false, isNew:false },
+    { id:33,  cat:'desafios',icon:'🎗️', name:'Dedicação',          desc:'10 desafios completos',     unlocked:false, isNew:false },
+
+    // ⚡ XP & NÍVEL
+    { id:34,  cat:'xp',      icon:'⚡', name:'Faísca',             desc:'Alcance 100 XP',            unlocked:false, isNew:false },
+    { id:35,  cat:'xp',      icon:'🔋', name:'Carregado',          desc:'Alcance 500 XP',            unlocked:false, isNew:false },
+    { id:36,  cat:'xp',      icon:'💡', name:'Iluminado',          desc:'Alcance 1000 XP',           unlocked:false, isNew:false },
+    { id:37,  cat:'xp',      icon:'🌠', name:'Estrela Cadente',    desc:'Alcance 2500 XP',           unlocked:false, isNew:false },
+    { id:38,  cat:'xp',      icon:'🌞', name:'Supernova',          desc:'Alcance 5000 XP',           unlocked:false, isNew:false },
+    { id:39,  cat:'xp',      icon:'🪐', name:'Planetário',         desc:'Alcance 10000 XP',          unlocked:false, isNew:false },
+    { id:40,  cat:'xp',      icon:'🎓', name:'Aprendiz',           desc:'Chegue ao Nível 2',         unlocked:false, isNew:false },
+    { id:41,  cat:'xp',      icon:'📜', name:'Estudioso',          desc:'Chegue ao Nível 5',         unlocked:false, isNew:false },
+    { id:42,  cat:'xp',      icon:'🧙', name:'Sábio',              desc:'Chegue ao Nível 10',        unlocked:false, isNew:false },
+
+    // 🌅 MANHÃ / HORÁRIO
+    { id:43,  cat:'horario', icon:'🌅', name:'Madrugador',         desc:'Complete hábito antes 8h',  unlocked:false, isNew:false },
+    { id:44,  cat:'horario', icon:'☕', name:'Café da Manhã',       desc:'5 dias marcando antes 9h',  unlocked:false, isNew:false },
+    { id:45,  cat:'horario', icon:'🌇', name:'Noturno',             desc:'Complete hábito após 21h',  unlocked:false, isNew:false },
+    { id:46,  cat:'horario', icon:'🕛', name:'Meia-Noite',          desc:'Marcou às 23h59',           unlocked:false, isNew:false },
+    { id:47,  cat:'horario', icon:'🌤️', name:'Rotina Matinal',      desc:'7 dias antes das 8h',       unlocked:false, isNew:false },
+    { id:48,  cat:'horario', icon:'🦉', name:'Coruja',              desc:'7 dias após 22h',           unlocked:false, isNew:false },
+
+    // 🏃 MOVIMENTO / EXERCÍCIO
+    { id:49,  cat:'move',    icon:'🏃', name:'Corredor',            desc:'Hábito exercício 5x',       unlocked:false, isNew:false },
+    { id:50,  cat:'move',    icon:'🚴', name:'Ciclista',            desc:'Hábito exercício 10x',      unlocked:false, isNew:false },
+    { id:51,  cat:'move',    icon:'🤸', name:'Flexível',            desc:'Hábito exercício 20x',      unlocked:false, isNew:false },
+    { id:52,  cat:'move',    icon:'🏋️', name:'Musculoso',           desc:'Hábito exercício 50x',      unlocked:false, isNew:false },
+    { id:53,  cat:'move',    icon:'🥊', name:'Lutador',             desc:'Hábito exercício 100x',     unlocked:false, isNew:false },
+    { id:54,  cat:'move',    icon:'🧘', name:'Meditador',           desc:'Hábito meditação 10x',      unlocked:false, isNew:false },
+    { id:55,  cat:'move',    icon:'🧠', name:'Mente Zen',           desc:'Hábito meditação 30x',      unlocked:false, isNew:false },
+    { id:56,  cat:'move',    icon:'🏊', name:'Nadador',             desc:'30 dias de movimento',      unlocked:false, isNew:false },
+
+    // 📚 LEITURA / MENTE
+    { id:57,  cat:'mente',   icon:'📖', name:'Leitor',              desc:'Hábito leitura 5x',         unlocked:false, isNew:false },
+    { id:58,  cat:'mente',   icon:'📚', name:'Bibliófilo',          desc:'Hábito leitura 20x',        unlocked:false, isNew:false },
+    { id:59,  cat:'mente',   icon:'🧩', name:'Curioso',             desc:'Hábito leitura 50x',        unlocked:false, isNew:false },
+    { id:60,  cat:'mente',   icon:'✍️', name:'Escritor',            desc:'Hábito escrita 10x',        unlocked:false, isNew:false },
+    { id:61,  cat:'mente',   icon:'🎵', name:'Músico',              desc:'Hábito música 10x',         unlocked:false, isNew:false },
+    { id:62,  cat:'mente',   icon:'🎨', name:'Artista',             desc:'Hábito criativo 10x',       unlocked:false, isNew:false },
+    { id:63,  cat:'mente',   icon:'🔬', name:'Cientista',           desc:'Hábito aprendizado 30x',    unlocked:false, isNew:false },
+
+    // 💧 SAÚDE
+    { id:64,  cat:'saude',   icon:'💧', name:'Hidratado',           desc:'Água 7 dias seguidos',      unlocked:false, isNew:false },
+    { id:65,  cat:'saude',   icon:'🥗', name:'Saudável',            desc:'Hábito nutrição 10x',       unlocked:false, isNew:false },
+    { id:66,  cat:'saude',   icon:'😴', name:'Dorminhoco',          desc:'Hábito sono 7x',            unlocked:false, isNew:false },
+    { id:67,  cat:'saude',   icon:'🫀', name:'Coração Saudável',    desc:'30 dias de saúde',          unlocked:false, isNew:false },
+    { id:68,  cat:'saude',   icon:'🌿', name:'Natureza',            desc:'Hábito ao ar livre 10x',    unlocked:false, isNew:false },
+    { id:69,  cat:'saude',   icon:'🍎', name:'Maçã por Dia',        desc:'Nutrição 30 dias seguidos', unlocked:false, isNew:false },
+    { id:70,  cat:'saude',   icon:'🧬', name:'DNA de Ferro',        desc:'90 dias sem falhar saúde',  unlocked:false, isNew:false },
+
+    // 🌱 CRESCIMENTO PESSOAL
+    { id:71,  cat:'grow',    icon:'🌱', name:'Brotou',              desc:'Crie seu 1º hábito',        unlocked:false, isNew:false },
+    { id:72,  cat:'grow',    icon:'🌿', name:'Crescendo',           desc:'Crie 3 hábitos',            unlocked:false, isNew:false },
+    { id:73,  cat:'grow',    icon:'🌳', name:'Árvore Forte',        desc:'Crie 5 hábitos',            unlocked:false, isNew:false },
+    { id:74,  cat:'grow',    icon:'🌲', name:'Floresta',            desc:'Crie 10 hábitos',           unlocked:false, isNew:false },
+    { id:75,  cat:'grow',    icon:'🪴', name:'Jardineiro',          desc:'Edite um hábito',           unlocked:false, isNew:false },
+    { id:76,  cat:'grow',    icon:'💼', name:'Profissional',        desc:'Hábito produtividade 20x',  unlocked:false, isNew:false },
+    { id:77,  cat:'grow',    icon:'🎯', name:'Sniper',              desc:'Meta atingida 10 vezes',    unlocked:false, isNew:false },
+    { id:78,  cat:'grow',    icon:'🏗️', name:'Construtor',          desc:'21 dias construindo hábito',unlocked:false, isNew:false },
+    { id:79,  cat:'grow',    icon:'🦋', name:'Metamorfose',         desc:'30 dias de transformação',  unlocked:false, isNew:false },
+    { id:80,  cat:'grow',    icon:'🪄', name:'Mágico',              desc:'Hábito virou rotina',       unlocked:false, isNew:false },
+
+    // 📅 DIAS DA SEMANA
+    { id:81,  cat:'semana',  icon:'🔵', name:'Guerreiro de Seg',    desc:'10x na segunda-feira',      unlocked:false, isNew:false },
+    { id:82,  cat:'semana',  icon:'🟢', name:'Terça Invicta',       desc:'10x na terça-feira',        unlocked:false, isNew:false },
+    { id:83,  cat:'semana',  icon:'🟡', name:'Quarta de Ouro',      desc:'10x na quarta-feira',       unlocked:false, isNew:false },
+    { id:84,  cat:'semana',  icon:'🟠', name:'Quinta do Trovão',    desc:'10x na quinta-feira',       unlocked:false, isNew:false },
+    { id:85,  cat:'semana',  icon:'🔴', name:'Sexta Feroz',         desc:'10x na sexta-feira',        unlocked:false, isNew:false },
+    { id:86,  cat:'semana',  icon:'🟣', name:'Sábado Guerreiro',    desc:'10x no sábado',             unlocked:false, isNew:false },
+    { id:87,  cat:'semana',  icon:'⚪', name:'Domingo Sagrado',      desc:'10x no domingo',            unlocked:false, isNew:false },
+    { id:88,  cat:'semana',  icon:'📅', name:'Semana Completa',     desc:'Todos os dias da semana',   unlocked:false, isNew:false },
+    { id:89,  cat:'semana',  icon:'🗓️', name:'Mês Impecável',       desc:'Sem falhar em 1 mês',       unlocked:false, isNew:false },
+
+    // 🏅 ESPECIAIS
+    { id:90,  cat:'special', icon:'🎂', name:'Aniversário',         desc:'1 ano usando o app',        unlocked:false, isNew:false },
+    { id:91,  cat:'special', icon:'🎁', name:'Surpresa',            desc:'Complete hábito inesperado',unlocked:false, isNew:false },
+    { id:92,  cat:'special', icon:'🌍', name:'Global',              desc:'Hábito em 3 fusos horários',unlocked:false, isNew:false },
+    { id:93,  cat:'special', icon:'🤝', name:'Social',              desc:'Compartilhe seu progresso', unlocked:false, isNew:false },
+    { id:94,  cat:'special', icon:'💌', name:'Motivado',            desc:'Leia 10 frases motivacionais',unlocked:false,isNew:false },
+    { id:95,  cat:'special', icon:'🛸', name:'Alienígena',          desc:'Faça algo impossível',      unlocked:false, isNew:false },
+    { id:96,  cat:'special', icon:'🎭', name:'Ator',                desc:'Complete hábito com estilo',unlocked:false, isNew:false },
+    { id:97,  cat:'special', icon:'🃏', name:'Coringa',             desc:'Complete em dia de chuva',  unlocked:false, isNew:false },
+    { id:98,  cat:'special', icon:'🔭', name:'Astrônomo',           desc:'Complete à meia-noite',     unlocked:false, isNew:false },
+    { id:99,  cat:'special', icon:'🎪', name:'Showman',             desc:'Confetti 50 vezes',         unlocked:false, isNew:false },
+    { id:100, cat:'special', icon:'💯', name:'Perfeição',           desc:'100 dias sem falhar',       unlocked:false, isNew:false },
+
+    // 🔢 NÚMEROS
+    { id:101, cat:'numeros', icon:'1️⃣', name:'Um',                  desc:'1º dia completo',           unlocked:false, isNew:false },
+    { id:102, cat:'numeros', icon:'5️⃣', name:'Cinco',               desc:'5 dias completos',          unlocked:false, isNew:false },
+    { id:103, cat:'numeros', icon:'🔟', name:'Dez',                 desc:'10 dias completos',         unlocked:false, isNew:false },
+    { id:104, cat:'numeros', icon:'💫', name:'Vinte e Um',          desc:'21 dias completos',         unlocked:false, isNew:false },
+    { id:105, cat:'numeros', icon:'📊', name:'Cinquenta',           desc:'50 dias completos',         unlocked:false, isNew:false },
+    { id:106, cat:'numeros', icon:'🏁', name:'Cem',                 desc:'100 dias completos',        unlocked:false, isNew:false },
+    { id:107, cat:'numeros', icon:'🔢', name:'Duzentos',            desc:'200 dias completos',        unlocked:false, isNew:false },
+    { id:108, cat:'numeros', icon:'♾️', name:'Infinito',            desc:'365 dias completos',        unlocked:false, isNew:false },
+
+    // 🌦️ CLIMA / ESTAÇÕES
+    { id:109, cat:'estacao', icon:'❄️', name:'Inverno',             desc:'Hábito nos 3 meses frios',  unlocked:false, isNew:false },
+    { id:110, cat:'estacao', icon:'🌸', name:'Primavera',           desc:'Hábito 3 meses florescendo',unlocked:false, isNew:false },
+    { id:111, cat:'estacao', icon:'☀️', name:'Verão',               desc:'Hábito nos 3 meses quentes',unlocked:false, isNew:false },
+    { id:112, cat:'estacao', icon:'🍂', name:'Outono',              desc:'Hábito 3 meses de colheita',unlocked:false, isNew:false },
+    { id:113, cat:'estacao', icon:'🌀', name:'Ciclone',             desc:'Hábito em dia de tempestade',unlocked:false,isNew:false },
+    { id:114, cat:'estacao', icon:'🌈', name:'Arco-Íris',           desc:'Complete após dias difíceis',unlocked:false,isNew:false },
+
+    // 🤯 DESAFIOS EXTREMOS
+    { id:115, cat:'extremo', icon:'🧊', name:'Gelo Vivo',           desc:'Complete mesmo doente',     unlocked:false, isNew:false },
+    { id:116, cat:'extremo', icon:'🔥', name:'Inferno de Ferro',    desc:'Streak 50 dias hábito difícil',unlocked:false,isNew:false },
+    { id:117, cat:'extremo', icon:'⛰️', name:'Everest',             desc:'Suba ao nível máximo',      unlocked:false, isNew:false },
+    { id:118, cat:'extremo', icon:'🌋', name:'Vulcão',              desc:'10 hábitos num dia',        unlocked:false, isNew:false },
+    { id:119, cat:'extremo', icon:'🦁', name:'Leão',                desc:'Nunca quebrou um streak',   unlocked:false, isNew:false },
+    { id:120, cat:'extremo', icon:'🐉', name:'Dragão',              desc:'500 dias no total',         unlocked:false, isNew:false },
+    { id:121, cat:'extremo', icon:'⚔️', name:'Guerreiro',           desc:'Retorne após 7 dias parado',unlocked:false, isNew:false },
+    { id:122, cat:'extremo', icon:'🛡️', name:'Blindado',            desc:'Nunca abandonou desafio',   unlocked:false, isNew:false },
+
+    // 🎮 GAMER
+    { id:123, cat:'gamer',   icon:'🎮', name:'Player 1',            desc:'Abra o app 10 vezes',       unlocked:false, isNew:false },
+    { id:124, cat:'gamer',   icon:'🕹️', name:'Gamer',               desc:'Abra o app 50 vezes',       unlocked:false, isNew:false },
+    { id:125, cat:'gamer',   icon:'👾', name:'Arcade',              desc:'Complete 3 hábitos num dia',unlocked:false, isNew:false },
+    { id:126, cat:'gamer',   icon:'🎲', name:'Dado',                desc:'Surpresa aleatória',        unlocked:false, isNew:false },
+    { id:127, cat:'gamer',   icon:'🏆', name:'High Score',          desc:'Maior XP do app',           unlocked:false, isNew:false },
+    { id:128, cat:'gamer',   icon:'🔓', name:'Desbloqueou Tudo',    desc:'Todos os hábitos ativos',   unlocked:false, isNew:false },
+    { id:129, cat:'gamer',   icon:'🎯', name:'Headshot',            desc:'Perfeito por 3 dias',       unlocked:false, isNew:false },
+    { id:130, cat:'gamer',   icon:'🌐', name:'Online',              desc:'Use o app todo dia por 1 semana',unlocked:false,isNew:false},
+
+    // 💰 RIQUEZA / PRODUTIVIDADE
+    { id:131, cat:'prod',    icon:'💰', name:'Rico em Hábitos',     desc:'10 hábitos criados',        unlocked:false, isNew:false },
+    { id:132, cat:'prod',    icon:'📈', name:'Crescimento',         desc:'XP aumentou 100% na semana',unlocked:false, isNew:false },
+    { id:133, cat:'prod',    icon:'🗂️', name:'Organizado',          desc:'Organize seus hábitos',     unlocked:false, isNew:false },
+    { id:134, cat:'prod',    icon:'⏰', name:'Pontual',             desc:'7 dias no mesmo horário',   unlocked:false, isNew:false },
+    { id:135, cat:'prod',    icon:'📋', name:'Planejador',          desc:'Use o app de manhã 7x',     unlocked:false, isNew:false },
+    { id:136, cat:'prod',    icon:'🗓️', name:'Agenda Cheia',        desc:'Todos hábitos definidos',   unlocked:false, isNew:false },
+
+    // 🤝 SOCIAL
+    { id:137, cat:'social',  icon:'🤝', name:'Parceiro',            desc:'Convide um amigo',          unlocked:false, isNew:false },
+    { id:138, cat:'social',  icon:'💬', name:'Comunicador',         desc:'Compartilhe 3 conquistas',  unlocked:false, isNew:false },
+    { id:139, cat:'social',  icon:'📣', name:'Influenciador',       desc:'Compartilhe 10 conquistas', unlocked:false, isNew:false },
+    { id:140, cat:'social',  icon:'👥', name:'Comunidade',          desc:'Participe de grupo',        unlocked:false, isNew:false },
+    { id:141, cat:'social',  icon:'🌟', name:'Inspiração',          desc:'Motive alguém',             unlocked:false, isNew:false },
+
+    // 🧬 DNA / CIÊNCIA
+    { id:142, cat:'ciencia', icon:'🧬', name:'DNA de Ouro',         desc:'Hábito por 66 dias (ciência)',unlocked:false,isNew:false },
+    { id:143, cat:'ciencia', icon:'🔭', name:'Explorador',          desc:'Explore todas as telas',    unlocked:false, isNew:false },
+    { id:144, cat:'ciencia', icon:'🧪', name:'Experimento',         desc:'Teste 5 tipos de hábito',   unlocked:false, isNew:false },
+    { id:145, cat:'ciencia', icon:'⚗️', name:'Alquimista',          desc:'Transforme 3 hábitos ruins',unlocked:false, isNew:false },
+    { id:146, cat:'ciencia', icon:'🔬', name:'Microscópio',         desc:'Analise seu progresso',     unlocked:false, isNew:false },
+
+    // ✨ SECRETOS
+    { id:147, cat:'secreto', icon:'❓', name:'???',                 desc:'Conquista secreta',         unlocked:false, isNew:false },
+    { id:148, cat:'secreto', icon:'❓', name:'???',                 desc:'Conquista secreta',         unlocked:false, isNew:false },
+    { id:149, cat:'secreto', icon:'❓', name:'???',                 desc:'Conquista secreta',         unlocked:false, isNew:false },
+    { id:150, cat:'secreto', icon:'🌌', name:'Universo',            desc:'Conquiste tudo',            unlocked:false, isNew:false },
   ],
   selectedEmoji: '🧘',
   selectedColor: '#d4ff47',
@@ -375,33 +553,90 @@ function autoLinkHabit(challenge) {
 // ===================================================
 // ACHIEVEMENTS
 // ===================================================
+const BADGE_CATEGORIES = {
+  streak:  { label: '🔥 Streak & Consistência' },
+  habitos: { label: '✅ Hábitos Completos' },
+  desafios:{ label: '🎯 Desafios' },
+  xp:      { label: '⚡ XP & Nível' },
+  horario: { label: '⏰ Horário' },
+  move:    { label: '🏃 Movimento & Meditação' },
+  mente:   { label: '📚 Mente & Criatividade' },
+  saude:   { label: '💧 Saúde' },
+  grow:    { label: '🌱 Crescimento Pessoal' },
+  semana:  { label: '📅 Dias da Semana' },
+  special: { label: '🏅 Especiais' },
+  numeros: { label: '🔢 Marcos Numéricos' },
+  estacao: { label: '🌦️ Clima & Estações' },
+  extremo: { label: '🤯 Desafios Extremos' },
+  gamer:   { label: '🎮 Gamer' },
+  prod:    { label: '💼 Produtividade' },
+  social:  { label: '🤝 Social' },
+  ciencia: { label: '🧬 Ciência' },
+  secreto: { label: '✨ Conquistas Secretas' },
+};
+
 function renderAchieve() {
-  const today   = todayStr();
-  const done    = state.habits.filter(h => h.lastDone === today).length;
+  const today    = todayStr();
+  const done     = state.habits.filter(h => h.lastDone === today).length;
   const unlocked = state.badges.filter(b => b.unlocked).length;
 
   document.getElementById('achieve-stats').innerHTML = `
     <div class="ast-card lime"><div class="ast-val">${state.streak}</div><div class="ast-lbl">🔥 Streak atual</div></div>
-    <div class="ast-card"><div class="ast-val">${unlocked}</div><div class="ast-lbl">🏅 Badges ganhos</div></div>
+    <div class="ast-card"><div class="ast-val">${unlocked}/150</div><div class="ast-lbl">🏅 Badges ganhos</div></div>
     <div class="ast-card"><div class="ast-val">${state.xp}</div><div class="ast-lbl">⚡ XP total</div></div>
     <div class="ast-card"><div class="ast-val">${done}</div><div class="ast-lbl">✅ Hoje completos</div></div>
   `;
 
-  const grid = document.getElementById('badges-grid');
-  grid.innerHTML = '';
+  const container = document.getElementById('badges-container');
+  container.innerHTML = '';
+
+  // Agrupa badges por categoria
+  const grouped = {};
   state.badges.forEach(b => {
-    const el = document.createElement('div');
-    el.className = 'badge-item' + (b.unlocked ? ' unlocked' : '');
-    el.innerHTML = `
-      ${b.isNew && b.unlocked ? '<div class="badge-new">Novo!</div>' : ''}
-      <div class="badge-icon">${b.icon}</div>
-      <div class="badge-name">${b.name}</div>
-      <div class="badge-desc">${b.desc}</div>
-    `;
-    if (b.unlocked) el.style.animation = 'popIn 0.4s cubic-bezier(0.34,1.56,0.64,1) both';
-    grid.appendChild(el);
+    if (!grouped[b.cat]) grouped[b.cat] = [];
+    grouped[b.cat].push(b);
   });
 
+  let globalIdx = 0;
+
+  Object.entries(BADGE_CATEGORIES).forEach(([catKey, catInfo]) => {
+    const badges = grouped[catKey];
+    if (!badges) return;
+
+    // Título da categoria
+    const title = document.createElement('div');
+    title.className = 'badge-category-title';
+    title.textContent = catInfo.label;
+    container.appendChild(title);
+
+    // Grid
+    const grid = document.createElement('div');
+    grid.className = 'badges-grid';
+
+    badges.forEach(b => {
+      const el  = document.createElement('div');
+      const idx = globalIdx++;
+      el.className = 'badge-item' + (b.unlocked ? ' unlocked' : '');
+      el.innerHTML = `
+        ${b.isNew && b.unlocked ? '<div class="badge-new">Novo!</div>' : ''}
+        ${!b.unlocked ? '<div class="badge-locked-icon">🔒</div>' : ''}
+        <div class="badge-icon">${b.unlocked || b.cat !== 'secreto' ? b.icon : '❓'}</div>
+        <div class="badge-name">${b.unlocked || b.cat !== 'secreto' ? b.name : '???'}</div>
+        <div class="badge-desc">${b.unlocked || b.cat !== 'secreto' ? b.desc : 'Conquista secreta'}</div>
+      `;
+      grid.appendChild(el);
+
+      // Stagger animado com IntersectionObserver
+      setTimeout(() => {
+        el.classList.add('animate-in');
+        el.style.animationDelay = ((idx % 9) * 0.055) + 's';
+      }, 10);
+    });
+
+    container.appendChild(grid);
+  });
+
+  // Marca badges novos como vistos
   document.getElementById('badge-dot').classList.remove('show');
   state.badges.forEach(b => b.isNew = false);
 }
@@ -581,4 +816,24 @@ document.head.appendChild(extraCSS);
 // ===================================================
 // INIT
 // ===================================================
+
+// Verifica se o usuário perdeu dias — quebra streak de hábitos e desafios
+function checkMissedDays() {
+  const today = todayStr();
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  const yesterdayStr = `${yesterday.getFullYear()}-${String(yesterday.getMonth()+1).padStart(2,'0')}-${String(yesterday.getDate()).padStart(2,'0')}`;
+
+  state.habits.forEach(h => {
+    // Se o último registro não é hoje nem ontem, streak zera
+    if (h.lastDone && h.lastDone !== today && h.lastDone !== yesterdayStr) {
+      h.streak = 0;
+    }
+  });
+
+  // Desafios: se não avançou ontem, perde o dia (não avança, mas não remove progresso)
+  // O avanço simplesmente não acontece — a lógica de advanceChallengesForHabit já controla isso
+}
+
 document.getElementById('bottom-nav').style.display = 'none';
+checkMissedDays();
